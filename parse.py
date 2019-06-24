@@ -50,7 +50,7 @@ for _, _, files in os.walk(label_dir):
         keyout = cv2.waitKey(0)
         if keyout==121:
             print('label for {} is qualified, it will be move to the good label dir'.format(file))
-            shutil.move(file, good_label_dir)
+            shutil.move(os.path.join(label_dir, file), good_label_dir)
         elif keyout==110:
             print('label for {} is uncertain, it will be move to the bad label dir'.format(file))
             shutil.move(file, bad_label_dir)
