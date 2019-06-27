@@ -4,6 +4,7 @@ import os
 import shutil
 import argparse
 
+
 parse = argparse.ArgumentParser(description='the argument used to parse label')
 parse.add_argument('--path', '-p', type=str, default='F:/PycharmProjects/LingZhiProj', help='root path')
 parse.add_argument('--lb_path', '-l', type=str, default='F:/PycharmProjects/LingZhiProj/Annotation', help='label path')
@@ -21,8 +22,14 @@ if not os.path.isdir(good_label_dir):
 if not os.path.isdir(bad_label_dir):
     os.mkdir(bad_label_dir)
 cv2.namedWindow('image', cv2.WINDOW_NORMAL)
+review_flag = False
+filelist = []
 for _, _, files in os.walk(label_dir):
     for file in files:
+        if review_flag == True:
+            file = filelist[-1]
+            filelist.pop(-1)
+            review_flag=False
         filepath = os.path.join(label_dir, file)
         print(filepath)
         tree = ET.parse(filepath)
@@ -47,13 +54,23 @@ for _, _, files in os.walk(label_dir):
             cv2.rectangle(image, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
             cv2.putText(image, objdict[i * 5], (xmax, ymax), cv2.FONT_HERSHEY_COMPLEX, 2, (0, 0, 255), 2)
         cv2.imshow('image', image)
+        # This list will store 10 images for you to undo your choice
         keyout = cv2.waitKey(0)
         if keyout==121:
             print('label for {} is qualified, it will be move to the good label dir'.format(file))
-            shutil.move(os.path.join(label_dir, file), good_label_dir)
+            fpath = os.path.join(good_label_dir, file)
+            filelist.append(fpath)
+            if not os.path.isfile(fpath):
+                shutil.move(os.path.join(label_dir, file), good_label_dir)
         elif keyout==110:
             print('label for {} is uncertain, it will be move to the bad label dir'.format(file))
-            shutil.move(file, bad_label_dir)
+            fpath = os.path.join(bad_label_dir, file)
+            filelist.append(fpath)
+            if not os.path.isfile(fpath):
+                shutil.move(os.path.join(label_dir, file), bad_label_dir)
+        elif keyout==98:
+            print('look at the previous label')
+            review_flag = True
         else:
             raise ValueError('unrecognizing input!!!')
         print(objdict)
