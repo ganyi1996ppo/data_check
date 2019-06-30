@@ -46,6 +46,8 @@ for _, _, files in os.walk(label_dir):
             objdict.append(int(bndbox.find('ymax').text))
         imname = os.path.join(img_dir, filename)
         image = cv2.imread(imname)
+        if not os.path.isfile(image):
+            continue
         for i in range(len(objdict)//5):
             xmin = objdict[i * 5 + 1]
             ymin = objdict[i * 5 + 2]
