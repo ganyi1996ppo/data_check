@@ -24,26 +24,33 @@ if not os.path.isdir(bad_label_dir):
 cv2.namedWindow('image', cv2.WINDOW_NORMAL)
 review_flag = False
 filelist = []
-for _, _, files in os.walk(label_dir):
-    for file in files:
-        if review_flag == True:
-            file = filelist[-1]
-            filelist.pop(-1)
-            review_flag=False
-        filepath = os.path.join(label_dir, file)
-        print(filepath)
-        tree = ET.parse(filepath)
-        root = tree.getroot()
-        obj = root.findall('object')
-        filename = root.find('filename').text
-        objdict = []
-        for ob in obj:
-            objdict.append(ob.find('name').text)
-            bndbox = ob.find('bndbox')
-            objdict.append(int(bndbox.find('xmin').text))
-            objdict.append(int(bndbox.find('ymin').text))
-            objdict.append(int(bndbox.find('xmax').text))
-            objdict.append(int(bndbox.find('ymax').text))
+class Label_iter(object):
+    def __init__(self,
+                 label_dir,
+                 class_list):
+        self.label_dir = label_dir
+        self.class_list = class_list
+
+    for _, _, files in os.walk(label_dir):
+        for file in files:
+            if review_flag == True:
+                file = filelist[-1]
+                filelist.pop(-1)
+                review_flag=False
+            filepath = os.path.join(label_dir, file)
+            print(filepath)
+            tree = ET.parse(filepath)
+            root = tree.getroot()
+            obj = root.findall('object')
+            filename = root.find('filename').text
+            objdict = []
+            for ob in obj:
+                objdict.append(ob.find('name').text)
+                bndbox = ob.find('bndbox')
+                objdict.append(int(bndbox.find('xmin').text))
+                objdict.append(int(bndbox.find('ymin').text))
+                objdict.append(int(bndbox.find('xmax').text))
+                objdict.append(int(bndbox.find('ymax').text))
         imname = os.path.join(img_dir, filename)
         if not os.path.isfile(imname):
             continue
