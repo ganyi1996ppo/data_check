@@ -33,6 +33,10 @@ class XML2DarkNet(Label_Iter_Base):
             bbox = label_info[obj*5+1:obj*5+4]
             bb = self.convert_bbox((height, width), bbox)
             dest_file.write(str(class_id) + ' ' + ' '.join([str(a) for a in bb]) + '\n')
+        dest_file.close()
+
+model = XML2DarkNet()
+model.Iter_labels()
 
 
 
