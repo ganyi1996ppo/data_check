@@ -7,9 +7,9 @@ import collections
 
 class Label_Iter_Base(object):
     def __init__(self,
-                 label_dir,
-                 img_dir,
-                 class_names,
+                 label_dir='/home/ganyidarknet/wajueji/wehave_good_labels/',
+                 img_dir='/home/ganyi/darknet/wajueji/images',
+                 class_names=['Excavator', 'crane', 'bulldozer','truck'],
                  iter_mode='generator'):
         assert iter_mode=='generator', 'iter mode only support generator now, list mode will be updated soon'
         self.iter_mode = iter_mode

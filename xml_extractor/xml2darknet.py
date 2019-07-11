@@ -4,7 +4,7 @@ from label_iter_base import Label_Iter_Base
 
 class XML2DarkNet(Label_Iter_Base):
     def __init__(self,
-                 dest_dir,
+                 dest_dir='/home/ganyi/darknet/wajueji/new_labels',
                  **kwargs):
         super(XML2DarkNet, self).__init__(**kwargs)
         self.dest_dir = dest_dir
