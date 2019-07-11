@@ -6,11 +6,11 @@ import argparse
 
 
 parse = argparse.ArgumentParser(description='the argument used to parse label')
-parse.add_argument('--path', '-p', type=str, default='F:/PycharmProjects/LingZhiProj', help='root path')
-parse.add_argument('--lb_path', '-l', type=str, default='F:/PycharmProjects/LingZhiProj/Annotation', help='label path')
-parse.add_argument('--st_path', '-s', type=str, default='F:/PycharmProjects/LingZhiProj/good_labels', help='store path')
-parse.add_argument('--fi_path', '-f', type=str, default='F:/PycharmProjects/LingZhiProj/bad_labels', help='bad label')
-parse.add_argument('--im_path', '-i', type=str, default='F:/PycharmProjects/LingZhiProj/JPEGImge', help='image path')
+parse.add_argument('--path', '-p', type=str, default='/home/ganyi/darknet/wajueji', help='root path')
+parse.add_argument('--lb_path', '-l', type=str, default='/home/ganyi/darknet/wajueji/wehave_label', help='label path')
+parse.add_argument('--st_path', '-s', type=str, default='/home/ganyi/darknet/wajueji/wehave_good_labels', help='store path')
+parse.add_argument('--fi_path', '-f', type=str, default='/home/ganyi/darknet/wajueji/wehave_bad_labels', help='bad label')
+parse.add_argument('--im_path', '-i', type=str, default='/data1/datasets/wajueji/images', help='image path')
 args = parse.parse_args()
 
 label_dir = args.lb_path
@@ -45,6 +45,8 @@ for _, _, files in os.walk(label_dir):
             objdict.append(int(bndbox.find('xmax').text))
             objdict.append(int(bndbox.find('ymax').text))
         imname = os.path.join(img_dir, filename)
+        if not os.path.isfile(imname):
+            continue
         image = cv2.imread(imname)
         for i in range(len(objdict)//5):
             xmin = objdict[i * 5 + 1]
