@@ -7,7 +7,7 @@ import collections
 
 class Label_Iter_Base(object):
     def __init__(self,
-                 label_dir='/home/ganyidarknet/wajueji/wehave_good_labels/',
+                 label_dir='/home/ganyi/darknet/wajueji/wehave_good_labels/',
                  img_dir='/home/ganyi/darknet/wajueji/images',
                  class_names=['Excavator', 'crane', 'bulldozer','truck'],
                  iter_mode='generator'):
@@ -40,7 +40,7 @@ class Label_Iter_Base(object):
         if self.iter_mode == 'generator':
             for _,_,files in os.walk(self.label_dir):
                 for file in files:
-                    im_information, label_information = self.XML_extractor(file)
+                    im_information, label_information = self.XML_extractor(os.path.join(self.label_dir,file))
                     self.execute_information(im_information, label_information)
 
     def execute_information(self, im_info, label_info):
