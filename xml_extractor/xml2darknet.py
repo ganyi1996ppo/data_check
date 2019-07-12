@@ -36,8 +36,8 @@ class XML2DarkNet(Label_Iter_Base):
         dest_file.close()
 
     def generate_txt(self):
-        train_txt = open(os.path.join(self.dest_dir, 'train.txt'), 'w')
-        test_txt = open(os.path.join(self.dest_dir, 'test.txt'), 'w')
+        train_txt = open(os.path.join(os.path.relpath(self.dest_dir), 'train.txt'), 'w')
+        test_txt = open(os.path.join(os.path.relpath(self.dest_dir), 'test.txt'), 'w')
         for _,_,files in os.walk(self.dest_dir):
             for i, file in enumerate(files):
                 if i%10 == 0:
